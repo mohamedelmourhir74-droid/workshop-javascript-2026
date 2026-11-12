@@ -148,7 +148,7 @@ const barRecherche = document.getElementById("search")
 
 barRecherche.addEventListener("keyup" , event => {
     document.getElementById("employees-list").innerHTML = ""
-    let result = employees.filter(ele => ele.firstName.includes(barRecherche.value) || ele.lastName.includes(barRecherche.value))
+    let result = employees.filter(ele => ele.firstName.toLocaleLowerCase().includes(barRecherche.value.toLowerCase()) || ele.lastName.toLocaleLowerCase().includes(barRecherche.value.toLowerCase()))
     result.forEach(ell => {
         affichageEmploye (ell)
     })
@@ -164,3 +164,41 @@ selection.addEventListener("change", event => {
     })
 })
 
+// Statistiques RH
+
+document.getElementById("total-employees").innerText = employees.length
+
+
+let somme = 0
+employees.forEach(employe => {
+    
+    somme += employe.salary
+})
+document.getElementById("average-salary").innerText = `${somme / employees.length} MAD`
+
+
+let plusTroisAns = employees.filter(employe => employe.experience.years >= 3)
+document.getElementById("experienced-employees").innerText = plusTroisAns.length
+
+
+let compétencesDistinctes = [];
+employees.forEach(employe => {
+    for (let i = 0; i < employe.skills.length; i++) {
+        if (!compétencesDistinctes.includes(employe.skills[i].name)) {
+            compétencesDistinctes.push(employe.skills[i].name)
+        }
+    }
+})
+document.getElementById("unique-skills-count").innerText = compétencesDistinctes.length
+
+console.log(compétencesDistinctes)
+
+
+function affichageCompétencesDistinctes (compétencesDistinctes) {
+    document.getElementById("unique-skills").innerHTML = ""
+    compétencesDistinctes.forEach(competence => {
+    document.getElementById("unique-skills").innerHTML += `<span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">${competence}</span>`
+})
+}
+
+affichageCompétencesDistinctes(compétencesDistinctes)
