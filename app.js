@@ -68,7 +68,7 @@ const employees = [
 
 
 
-
+// Affichage dynamique
 
 function affichageContainerEmploye () {
     document.getElementById("employees-list").innerHTML = ""
@@ -139,3 +139,28 @@ function employeActions () {
             <button type="button" class="delete-btn flex-1 rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50" data-id="1">Supprimer</button>
           </div>`
 }
+
+
+
+// Recherche et filtres
+
+const barRecherche = document.getElementById("search")
+
+barRecherche.addEventListener("keyup" , event => {
+    document.getElementById("employees-list").innerHTML = ""
+    let result = employees.filter(ele => ele.firstName.includes(barRecherche.value) || ele.lastName.includes(barRecherche.value))
+    result.forEach(ell => {
+        affichageEmploye (ell)
+    })
+})
+
+const selection = document.getElementById("department-filter")
+
+selection.addEventListener("change", event => {
+    document.getElementById("employees-list").innerHTML = ""
+    let result = employees.filter(ele => ele.department == selection.value)
+    result.forEach(ell => {
+        affichageEmploye (ell)
+    })
+})
+
